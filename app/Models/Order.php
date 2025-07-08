@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
@@ -66,10 +67,13 @@ class Order extends Generic
                 });
             });
         }
-        self::$mainQuery->with('orderItems.item');
+        self::$mainQuery->with(['orderItems.item','user']);
         $results = parent::search($filters);
         return $results;
     }
-
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }
