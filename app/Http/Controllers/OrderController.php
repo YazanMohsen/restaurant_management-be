@@ -9,6 +9,7 @@ use App\Helpers\ResponseHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Scalar\String_;
 
 class OrderController extends Controller
 {
@@ -179,8 +180,10 @@ class OrderController extends Controller
         $order->updatePrice($order['id']);
     }
 
-    public function submitCart(int $id): JsonResponse
+    public function submitCart(int $id, Request $request): JsonResponse
     {
+        $customer_location = $request->input('customer_location');
+        $customer_phone_number = $request->input('customer_phone_number');
         // Find the order by ID
         $order = Order::find($id);
         if (!$order) {
@@ -199,6 +202,8 @@ class OrderController extends Controller
                     'total_price' => $orderItem['price'],
                     'count' => $orderItem['count'],
                     'status' => 'Pending',
+                    'customer_location' => $customer_location,
+                    'customer_phone_number' => $customer_phone_number,
                 ]);
                 $orders->put($restaurant_id, $createdOrder['id']);
                 $restaurant_order = $createdOrder['id'];

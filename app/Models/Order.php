@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 class Order extends Generic
 {
     protected $fillable = [
-        'total_price', 'status', 'user_id', 'count'
+        'total_price', 'status', 'user_id', 'count','customer_location','customer_phone_number'
     ];
 
     function orderItems(): HasMany
